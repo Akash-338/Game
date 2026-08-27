@@ -3,5 +3,6 @@ import App from "./App.jsx";
 import "./styles.css";
 import "./accessibility.css";
 import "./host-privacy.css";
+import "./responsive-universal.css";
 
 createRoot(document.getElementById("root")).render(<App />);

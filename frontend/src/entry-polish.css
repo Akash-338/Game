@@ -4,6 +4,7 @@
 .entry-card-professional h2 { margin-top:1.05rem; }
 .entry-host-note { align-items:flex-start; background:rgba(231,175,66,.13); border:1px solid rgba(196,132,35,.2); border-radius:12px; color:#72513b; display:flex; font-size:.74rem; gap:7px; line-height:1.4; margin:13px 0 0; padding:10px; }
 .entry-host-note svg { color:#b87e22; flex:none; margin-top:1px; }
+.entry-host-note > span { display:block; flex:1 1 0; min-width:0; width:0; }
 .recover-room-link { background:transparent; border:0; color:#92513d; display:block; font-size:.72rem; font-weight:800; margin:11px auto 0; padding:5px 7px; text-align:center; text-decoration:underline; text-decoration-color:rgba(146,81,61,.35); text-underline-offset:3px; }
 .recover-room-link:hover,.recover-room-link:focus-visible { color:#b14636; outline:none; text-decoration-color:currentColor; }
 .mode-switch-button { background:rgba(231,175,66,.17); border:1px solid rgba(231,175,66,.4); border-radius:9px; color:#ffdd92; font-size:.69rem; font-weight:900; letter-spacing:.02em; min-height:33px; padding:0 9px; }

@@ -1,0 +1,416 @@
+:root {
+  --responsive-gutter: clamp(0.875rem, 3vw, 3.5rem);
+  --responsive-content: 50rem;
+}
+
+html {
+  background: var(--wine);
+  overflow-x: hidden;
+}
+
+body {
+  min-width: 17.5rem;
+  overflow-x: hidden;
+}
+
+.app-shell,
+.player-layout,
+.host-shell {
+  overflow-x: clip;
+}
+
+.entry-page,
+.host-create {
+  width: min(100%, 92.5rem);
+  grid-template-columns: minmax(0, 1fr) minmax(21.5rem, 29rem);
+  gap: clamp(2rem, 6vw, 7rem);
+  padding: clamp(2rem, 5vw, 5.5rem) var(--responsive-gutter);
+}
+
+.entry-story,
+.host-create-story,
+.entry-card,
+.create-room-card,
+.host-stage,
+.host-roster-panel,
+.host-controls,
+.mobile-content,
+.topbar-right {
+  min-width: 0;
+}
+
+.entry-card,
+.create-room-card {
+  width: 100%;
+}
+
+.entry-card .chip,
+.create-room-card .chip,
+.entry-host-note,
+.lobby-status,
+.host-turn-card,
+.flash-alert,
+.error-toast {
+  overflow-wrap: anywhere;
+}
+
+.topbar {
+  height: auto;
+  min-height: 4.25rem;
+  gap: 0.75rem;
+  padding-inline: var(--responsive-gutter);
+}
+
+.topbar-right {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.mode-switch-button,
+.host-pill,
+.room-badge,
+.connection-label {
+  flex: 0 0 auto;
+}
+
+.mobile-content {
+  width: min(100%, var(--responsive-content));
+  max-width: none;
+  padding-inline: var(--responsive-gutter);
+}
+
+.host-grid {
+  grid-template-columns: minmax(13.75rem, 0.85fr) minmax(24rem, 1.8fr) minmax(15.5rem, 0.9fr);
+}
+
+.host-stage,
+.host-roster-panel,
+.host-controls,
+.vote-panel,
+.activity-panel,
+.player-hint-card,
+.round-scoreboard {
+  min-width: 0;
+}
+
+.host-results,
+.host-result-actions,
+.lobby-stage,
+.stage-card,
+.hint-board,
+.live-vote-feed,
+.round-score-list {
+  max-width: 100%;
+}
+
+.activity-dock {
+  right: var(--responsive-gutter);
+  width: min(25.625rem, calc(100vw - (var(--responsive-gutter) * 2)));
+}
+
+.activity-panel {
+  max-height: min(36rem, calc(100dvh - 5.75rem));
+}
+
+.hint-composer,
+.mobile-action {
+  padding-inline: max(var(--responsive-gutter), env(safe-area-inset-left)) max(var(--responsive-gutter), env(safe-area-inset-right));
+}
+
+.hint-composer input,
+.flash-form input,
+.private-input-row input,
+.discussion-composer input {
+  min-width: 0;
+}
+
+@media (max-width: 68.75rem) {
+  .entry-page,
+  .host-create {
+    width: min(100%, 56rem);
+    grid-template-columns: minmax(0, 1fr) minmax(20rem, 25rem);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+  }
+
+  .host-grid {
+    grid-template-columns: minmax(12.5rem, 0.75fr) minmax(0, 1.6fr);
+  }
+
+  .host-controls {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 52rem) {
+  .entry-page,
+  .host-create {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.5rem, 5vw, 2.5rem);
+    align-items: start;
+  }
+
+  .entry-story,
+  .host-create-story,
+  .entry-card,
+  .create-room-card {
+    width: min(100%, 40rem);
+  }
+
+  .entry-story,
+  .host-create-story {
+    justify-self: start;
+  }
+
+  .entry-card,
+  .create-room-card {
+    justify-self: center;
+  }
+}
+
+@media (max-width: 48rem) {
+  .entry-page,
+  .host-create {
+    min-height: 100dvh;
+    width: min(100%, 42rem);
+  }
+
+  .entry-story,
+  .host-create-story {
+    max-width: 34rem;
+  }
+
+  .mobile-content {
+    --responsive-content: 44rem;
+    padding-bottom: max(8.5rem, calc(6.5rem + env(safe-area-inset-bottom)));
+  }
+
+  .host-grid {
+    display: block;
+  }
+
+  .host-roster-panel,
+  .host-stage,
+  .host-controls {
+    width: 100%;
+  }
+
+  .host-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-dock {
+    top: calc(4.75rem + env(safe-area-inset-top));
+  }
+}
+
+@media (max-width: 35rem) {
+  :root {
+    --responsive-gutter: 0.875rem;
+  }
+
+  .entry-page,
+  .host-create {
+    gap: 1.5rem;
+    padding-block: 1.75rem;
+  }
+
+  .entry-story h1,
+  .host-create-story h1 {
+    font-size: clamp(3rem, 16vw, 4.15rem);
+  }
+
+  .entry-card,
+  .create-room-card {
+    border-radius: 1.35rem;
+    padding: 1.15rem;
+  }
+
+  .entry-card h2,
+  .create-room-card h2 {
+    font-size: clamp(1.7rem, 9vw, 2rem);
+  }
+
+  .topbar {
+    align-items: center;
+    min-height: 3.875rem;
+    gap: 0.35rem;
+    padding-inline: 0.625rem;
+  }
+
+  .room-badge small,
+  .topbar-right .host-pill {
+    display: none;
+  }
+
+  .room-badge {
+    min-width: 0;
+  }
+
+  .room-badge strong {
+    display: block;
+    font-size: 0.68rem;
+    max-width: 7.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .topbar-right {
+    gap: 0.375rem;
+  }
+
+  .mode-switch-button {
+    min-height: 2.2rem;
+    padding-inline: 0.4rem;
+    white-space: nowrap;
+  }
+
+  .activity-dock {
+    top: calc(4.25rem + env(safe-area-inset-top));
+    right: 0.5rem;
+    width: calc(100vw - 1rem);
+  }
+
+  .activity-panel {
+    max-height: calc(100dvh - 4.875rem - env(safe-area-inset-top));
+    border-radius: 0.9rem;
+  }
+
+  .hint-composer,
+  .mobile-action {
+    gap: 0.4rem;
+    padding-block: 0.625rem max(0.625rem, env(safe-area-inset-bottom));
+  }
+
+  .hint-composer input,
+  .hint-composer .button,
+  .mobile-action .button {
+    min-height: 2.8rem;
+  }
+
+  .live-vote-feed article,
+  .round-score-list article,
+  .score-row {
+    column-gap: 0.35rem;
+  }
+}
+
+@media (max-height: 35rem) and (orientation: landscape) {
+  .entry-page,
+  .host-create {
+    align-items: start;
+    min-height: auto;
+    padding-block: 1.5rem;
+  }
+
+  .entry-story h1,
+  .host-create-story h1 {
+    font-size: clamp(3rem, 7vw, 4.75rem);
+  }
+
+  .card-stack {
+    display: none;
+  }
+
+  .activity-panel {
+    max-height: calc(100dvh - 5rem);
+  }
+}
+
+@media (min-width: 90rem) {
+  :root {
+    --responsive-content: 58rem;
+  }
+
+  .entry-page,
+  .host-create {
+    width: min(100%, 108rem);
+    grid-template-columns: minmax(0, 1fr) minmax(28rem, 35rem);
+  }
+
+  .entry-story h1,
+  .host-create-story h1 {
+    font-size: clamp(5.5rem, 6vw, 8.5rem);
+  }
+
+  .host-grid {
+    grid-template-columns: minmax(16rem, 0.8fr) minmax(34rem, 2fr) minmax(18rem, 0.9fr);
+  }
+
+  .host-stage {
+    padding: clamp(2.5rem, 3.5vw, 5rem);
+  }
+
+  .hint-board {
+    max-height: min(48dvh, 38rem);
+  }
+}
+
+@media (min-width: 137.5rem) {
+  :root {
+    --responsive-gutter: clamp(3rem, 5vw, 7rem);
+    --responsive-content: 67.5rem;
+  }
+
+  .entry-page,
+  .host-create {
+    width: min(100%, 126rem);
+    grid-template-columns: minmax(0, 1fr) minmax(34rem, 40rem);
+    gap: clamp(5rem, 8vw, 12rem);
+  }
+
+  .entry-story h1,
+  .host-create-story h1 {
+    font-size: clamp(7.5rem, 7.5vw, 11rem);
+  }
+
+  .entry-card,
+  .create-room-card {
+    border-radius: 2rem;
+    padding: 2.25rem;
+  }
+
+  .entry-card h2,
+  .create-room-card h2 {
+    font-size: 2.75rem;
+  }
+
+  .entry-card label,
+  .create-room-card label,
+  .setting-block label {
+    font-size: 0.86rem;
+  }
+
+  .entry-card input,
+  .create-room-card input {
+    font-size: 1.05rem;
+    min-height: 3.5rem;
+  }
+
+  .button {
+    font-size: 1rem;
+    min-height: 3.35rem;
+  }
+
+  .topbar {
+    min-height: 5rem;
+  }
+
+  .host-grid {
+    grid-template-columns: minmax(20rem, 0.8fr) minmax(45rem, 2fr) minmax(22rem, 0.9fr);
+  }
+
+  .activity-dock {
+    width: min(30rem, calc(100vw - (var(--responsive-gutter) * 2)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entry-page,
+  .host-create,
+  .topbar,
+  .activity-dock {
+    scroll-behavior: auto;
+  }
+}
