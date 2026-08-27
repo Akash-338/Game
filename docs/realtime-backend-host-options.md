@@ -4,7 +4,9 @@
 
 The user-approved Render Free service **`word-impostor-realtime-staging`** is deployed in Singapore from `Akash-338/Game-` on the `main` branch. Its public HTTPS/WSS origin is `https://word-impostor-realtime-staging.onrender.com`. It runs the root Node.js workspace with `npm ci` and `node backend/server/index.js`. The provider secret manager contains only the existing Supabase Data API URL/server key, Upstash Redis TLS URL, and the two explicit cloud flags; no browser-facing `VITE_*` credential has been configured.
 
-The redacted public lifecycle check connects to this origin and validates cloud mode plus its Redis Socket.IO adapter before exercising room creation, presence, role-safe snapshots, direct-message privacy, alerts, moderation, hints, voting, tallying, continuation, rejoin, voluntary leave, host recovery, and full room cleanup. The backend has no reliance on its ephemeral local filesystem because authoritative cloud sessions use Supabase and cross-instance signaling uses Upstash Redis.
+The redacted public lifecycle check connects to this origin and validates cloud mode plus its Redis Socket.IO adapter before exercising room creation, presence, role-safe snapshots, direct-message privacy, alerts, moderation, hints, voting, tallying, continuation, rejoin, voluntary leave, host recovery, and full room cleanup. The final lifecycle passed against the live service. The backend has no reliance on its ephemeral local filesystem because authoritative cloud sessions use Supabase and cross-instance signaling uses Upstash Redis.
+
+The service deliberately responds with an application JSON `404` at `/` because it is a **backend-only** Socket.IO endpoint; it does not carry the browser bundle. The managed combined deployment still serves `dist/public/index.html` when that bundle is present. A separately deployed frontend must set only `VITE_REALTIME_URL` to this public HTTPS/WSS origin.
 
 ## Current Shortlist
 
