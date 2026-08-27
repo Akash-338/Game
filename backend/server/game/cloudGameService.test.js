@@ -16,6 +16,7 @@ function buildRepository(overrides = {}) {
     castVoteAtomically: vi.fn().mockResolvedValue({ roomId: "room-1", allVoted: true }),
     resolveVoteTallyAtomically: vi.fn().mockResolvedValue({ roomId: "room-1", result: "revealed" }),
     continueRoundAtomically: vi.fn().mockResolvedValue({ roomId: "room-1", status: "lobby" }),
+    updateLobbySettingsAtomically: vi.fn().mockResolvedValue({ roomId: "room-1" }),
     sendDirectMessageAtomically: vi.fn().mockResolvedValue({ roomId: "room-1", messageId: "message-1" }),
     purgeRoomSession: vi.fn().mockResolvedValue({ roomId: "room-1", purged: true }),
     postDiscussionMessageAtomically: vi.fn().mockResolvedValue({ roomId: "room-1", messageId: "discussion-1" }),
@@ -104,6 +105,19 @@ describe("cloud game service", () => {
     expect(repository.continueRoundAtomically).toHaveBeenCalledWith(expect.objectContaining({ roomId: "room-1", createdAt: 500 }));
   });
 
+  test("randomizes only a host-visible unused lobby word through the existing locked settings RPC", async () => {
+    const repository = buildRepository({
+      getAudienceSnapshot: vi.fn().mockResolvedValue({
+        room: { status: "lobby" },
+        wordChoices: [{ id: "animal:1", word: "Tiger", category: "Animal" }, { id: "food:2", word: "Dosa", category: "Food" }]
+      })
+    });
+    const service = createCloudGameService({ repository, now: () => 600, random: () => 0.75, idFactory: () => "random-1" });
+
+    await expect(service.randomizeWord("host-1")).resolves.toMatchObject({ roomId: "room-1", word: { id: "food:2", word: "Dosa" } });
+    expect(repository.updateLobbySettingsAtomically).toHaveBeenCalledWith({ operationId: "cloud-service-randomize-word-random-1", roomId: "room-1", hostToken: "host-1", changes: { selectedWordEntryId: "food:2" }, createdAt: 600 });
+  });
+
   test("parses recipient-only direct messages against the server-side room snapshot", async () => {
     const repository = buildRepository({
       getAudienceSnapshot: vi.fn().mockResolvedValue({ players: [
@@ -121,6 +135,13 @@ describe("cloud game service", () => {
     const repository = buildRepository();
     const service = createCloudGameService({ repository });
     await expect(service.endRoom("host-1")).resolves.toEqual({ roomId: "room-1" });
+    expect(repository.purgeRoomSession).toHaveBeenCalledWith("room-1");
+  });
+
+  test("uses the same verified server-side purge for a cloud restart session", async () => {
+    const repository = buildRepository();
+    const service = createCloudGameService({ repository });
+    await expect(service.restartSession("host-1")).resolves.toEqual({ roomId: "room-1" });
     expect(repository.purgeRoomSession).toHaveBeenCalledWith("room-1");
   });
 

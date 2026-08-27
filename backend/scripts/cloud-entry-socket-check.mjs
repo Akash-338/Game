@@ -104,6 +104,9 @@ try {
   roomId = (await repository.findRoomByCode(roomCode))?.id || null;
   assert.ok(roomId, "Cloud-created room must be persisted in Supabase.");
   assert.ok(created.snapshot.packs.length > 0, "A host snapshot must expose pack controls.");
+  const randomized = await request(host, "randomizeWord", { hostToken: created.hostToken });
+  assert.ok(randomized.word?.id, "Cloud random selection must return a host-visible available word.");
+  assert.equal((await repository.getAudienceSnapshot({ roomId, hostToken: created.hostToken })).room.selectedWordEntryId, randomized.word.id, "Cloud random selection must persist through the locked lobby-settings transaction.");
   setStage("pack-controls");
   const customPackId = `socket-pack-${roomCode.toLowerCase()}`;
   const customPack = { packId: customPackId, name: "Socket check pack", version: 1, entries: [{ id: 1, category: "Check", word: "Beacon", impostorHint: "Light" }, { id: 2, category: "Check", word: "Anchor", impostorHint: "Harbor" }] };

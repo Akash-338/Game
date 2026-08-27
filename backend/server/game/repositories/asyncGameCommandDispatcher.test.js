@@ -5,12 +5,19 @@ describe("async game command dispatcher", () => {
   test("preserves the current synchronous SQLite command contract by default", async () => {
     const snapshot = vi.fn(() => ({ source: "sqlite" }));
     const setReady = vi.fn(() => "room-local");
-    const dispatcher = createAsyncGameCommandDispatcher({ selectedRepository: { kind: "sqlite", repository: {} }, sqliteCommands: { snapshot, setReady, setPresence: vi.fn(), kickPlayer: vi.fn() } });
+    const chooseRandomWord = vi.fn(() => ({ id: "animal:1" }));
+    const getRoomByHostToken = vi.fn(() => ({ id: "room-local" }));
+    const restartSession = vi.fn(() => "room-local");
+    const dispatcher = createAsyncGameCommandDispatcher({ selectedRepository: { kind: "sqlite", repository: {} }, sqliteCommands: { snapshot, setReady, setPresence: vi.fn(), kickPlayer: vi.fn(), chooseRandomWord, getRoomByHostToken, restartSession } });
 
     await expect(dispatcher.setReady({ sessionToken: "local-session", ready: true })).resolves.toEqual({ roomId: "room-local" });
     await expect(dispatcher.getAudienceSnapshot({ roomId: "room-local", playerId: "player-1" })).resolves.toEqual({ source: "sqlite" });
     expect(setReady).toHaveBeenCalledWith("local-session", true);
     expect(snapshot).toHaveBeenCalledWith("room-local", { playerId: "player-1", isGhost: false });
+    await expect(dispatcher.randomizeWord("host-local")).resolves.toEqual({ roomId: "room-local", word: { id: "animal:1" } });
+    await expect(dispatcher.restartSession("host-local")).resolves.toEqual({ roomId: "room-local" });
+    expect(chooseRandomWord).toHaveBeenCalledWith("host-local");
+    expect(restartSession).toHaveBeenCalledWith("host-local");
     expect(dispatcher.isCloud).toBe(false);
   });
 
@@ -39,8 +46,10 @@ describe("async game command dispatcher", () => {
       submitHint: vi.fn().mockResolvedValue({ roomId: "room-cloud" }),
       submitVote: vi.fn().mockResolvedValue({ roomId: "room-cloud", tally: null }),
       continueRound: vi.fn().mockResolvedValue({ roomId: "room-cloud" }),
+      randomizeWord: vi.fn().mockResolvedValue({ roomId: "room-cloud", word: { id: "animal:1" } }),
       postDirectMessage: vi.fn().mockResolvedValue({ roomId: "room-cloud", messageId: "message-1" }),
       endRoom: vi.fn().mockResolvedValue({ roomId: "room-cloud" }),
+      restartSession: vi.fn().mockResolvedValue({ roomId: "room-cloud" }),
       postDiscussionMessage: vi.fn().mockResolvedValue({ roomId: "room-cloud", messageId: "discussion-1" }),
       leaveRoom: vi.fn().mockResolvedValue({ roomId: "room-cloud", result: "waiting" }),
       uploadPack: vi.fn().mockResolvedValue({ roomId: "room-cloud", packId: "movie-night" }),
@@ -58,11 +67,13 @@ describe("async game command dispatcher", () => {
     await dispatcher.getRoomByCode("CLOUD");
     await dispatcher.getRoomByHostToken("host-1");
     await dispatcher.startRound("host-1");
+    await dispatcher.randomizeWord("host-1");
     await dispatcher.submitHint("session-1", "clue");
     await dispatcher.submitVote("session-1", "player-2");
     await dispatcher.continueRound("host-1");
     await dispatcher.postDirectMessage("session-1", "@Maya hello");
     await dispatcher.endRoom("host-1");
+    await dispatcher.restartSession("host-1");
     await dispatcher.postDiscussionMessage("session-1", "sus clue");
     await dispatcher.leaveRoom("session-1");
     await dispatcher.uploadPack("host-1", { packId: "movie-night", entries: [] });
@@ -98,11 +109,13 @@ describe("async game command dispatcher", () => {
     expect(cloudService.getRoomByCode).toHaveBeenCalledWith("CLOUD");
     expect(cloudService.getRoomByHostToken).toHaveBeenCalledWith("host-1");
     expect(cloudService.startRound).toHaveBeenCalledWith("host-1");
+    expect(cloudService.randomizeWord).toHaveBeenCalledWith("host-1");
     expect(cloudService.submitHint).toHaveBeenCalledWith("session-1", "clue");
     expect(cloudService.submitVote).toHaveBeenCalledWith("session-1", "player-2", false);
     expect(cloudService.continueRound).toHaveBeenCalledWith("host-1");
     expect(cloudService.postDirectMessage).toHaveBeenCalledWith("session-1", "@Maya hello");
     expect(cloudService.endRoom).toHaveBeenCalledWith("host-1");
+    expect(cloudService.restartSession).toHaveBeenCalledWith("host-1");
     expect(cloudService.postDiscussionMessage).toHaveBeenCalledWith("session-1", "sus clue");
     expect(cloudService.leaveRoom).toHaveBeenCalledWith("session-1");
     expect(cloudService.uploadPack).toHaveBeenCalledWith("host-1", { packId: "movie-night", entries: [] });

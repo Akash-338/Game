@@ -39,6 +39,12 @@ export function createAsyncGameCommandDispatcher({ selectedRepository, sqliteCom
       if (isCloud) return cloudService.getRoomByHostToken(hostToken);
       return requireMethod(sqliteCommands.getRoomByHostToken, "sqliteCommands.getRoomByHostToken")(hostToken);
     },
+    async randomizeWord(hostToken) {
+      if (isCloud) return cloudService.randomizeWord(hostToken);
+      const word = requireMethod(sqliteCommands.chooseRandomWord, "sqliteCommands.chooseRandomWord")(hostToken);
+      const room = requireMethod(sqliteCommands.getRoomByHostToken, "sqliteCommands.getRoomByHostToken")(hostToken);
+      return { roomId: room.id, word };
+    },
     async startRound(hostToken) {
       if (isCloud) return cloudService.startRound(hostToken);
       const room = requireMethod(sqliteCommands.startRound, "sqliteCommands.startRound")(hostToken);
@@ -65,6 +71,10 @@ export function createAsyncGameCommandDispatcher({ selectedRepository, sqliteCom
     async endRoom(hostToken) {
       if (isCloud) return cloudService.endRoom(hostToken);
       return { roomId: requireMethod(sqliteCommands.endRoom, "sqliteCommands.endRoom")(hostToken) };
+    },
+    async restartSession(hostToken) {
+      if (isCloud) return cloudService.restartSession(hostToken);
+      return { roomId: requireMethod(sqliteCommands.restartSession, "sqliteCommands.restartSession")(hostToken) };
     },
     async postDiscussionMessage(sessionToken, content) {
       if (isCloud) return cloudService.postDiscussionMessage(sessionToken, content);

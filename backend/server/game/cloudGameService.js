@@ -100,6 +100,23 @@ export function createCloudGameService({ repository, now = () => Date.now(), ran
     async snapshot(roomId, { playerId = null, sessionToken = null, hostToken = null, isHost = false, isGhost = false, peek = false } = {}) {
       return repository.getAudienceSnapshot({ roomId, sessionToken, hostToken: isHost ? hostToken : null, peek: Boolean(isHost && peek), playerId, isGhost });
     },
+    async randomizeWord(hostToken) {
+      const room = await repository.findRoomByHostToken(hostToken);
+      ensure(room, "Host session is not valid.");
+      const hostSnapshot = await repository.getAudienceSnapshot({ roomId: room.id, hostToken });
+      ensure(hostSnapshot?.room?.status === "lobby", "Change round settings before the game starts.");
+      const wordChoices = hostSnapshot.wordChoices || [];
+      ensure(wordChoices.length, "No unused words are available. Change categories or restart the session.");
+      const word = wordChoices[Math.floor(random() * wordChoices.length)];
+      const result = await repository.updateLobbySettingsAtomically({
+        operationId: operationId("randomize-word"),
+        roomId: room.id,
+        hostToken,
+        changes: { selectedWordEntryId: word.id },
+        createdAt: now()
+      });
+      return { ...result, word };
+    },
     async startRound(hostToken) {
       const room = await repository.findRoomByHostToken(hostToken);
       ensure(room, "Host session is not valid.");
@@ -162,6 +179,12 @@ export function createCloudGameService({ repository, now = () => Date.now(), ran
       return repository.sendDirectMessageAtomically({ operationId: operationId("direct-message"), roomId: player.room_id, sessionToken, messageId: idFactory(), recipientPlayerId: recipient.id, content: match[2].trim(), createdAt: now() });
     },
     async endRoom(hostToken) {
+      const room = await repository.findRoomByHostToken(hostToken);
+      ensure(room, "Host session is not valid.");
+      await repository.purgeRoomSession(room.id);
+      return { roomId: room.id };
+    },
+    async restartSession(hostToken) {
       const room = await repository.findRoomByHostToken(hostToken);
       ensure(room, "Host session is not valid.");
       await repository.purgeRoomSession(room.id);
