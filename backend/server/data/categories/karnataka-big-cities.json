@@ -1,0 +1,67 @@
+{
+  "packId": "warm-party-classic-karnataka-big-cities",
+  "name": "Karnataka Big Cities · Warm Party Classic",
+  "version": 5,
+  "entries": [
+    {
+      "id": 25,
+      "category": "Karnataka Big Cities",
+      "word": "Bengaluru",
+      "impostorHint": "Silicon"
+    },
+    {
+      "id": 26,
+      "category": "Karnataka Big Cities",
+      "word": "Mysuru",
+      "impostorHint": "Palace"
+    },
+    {
+      "id": 27,
+      "category": "Karnataka Big Cities",
+      "word": "Mangaluru",
+      "impostorHint": "Coastline"
+    },
+    {
+      "id": 28,
+      "category": "Karnataka Big Cities",
+      "word": "Hubballi",
+      "impostorHint": "Junction"
+    },
+    {
+      "id": 29,
+      "category": "Karnataka Big Cities",
+      "word": "Belagavi",
+      "impostorHint": "Border"
+    },
+    {
+      "id": 30,
+      "category": "Karnataka Big Cities",
+      "word": "Kalaburagi",
+      "impostorHint": "Fort"
+    },
+    {
+      "id": 53,
+      "category": "Karnataka Big Cities",
+      "word": "Davanagere",
+      "impostorHint": "Textiles"
+    },
+    {
+      "id": 54,
+      "category": "Karnataka Big Cities",
+      "word": "Shivamogga",
+      "impostorHint": "Arecanut"
+    },
+    {
+      "id": 55,
+      "category": "Karnataka Big Cities",
+      "word": "Ballari",
+      "impostorHint": "Boulders"
+    },
+    {
+      "id": 56,
+      "category": "Karnataka Big Cities",
+      "word": "Tumakuru",
+      "impostorHint": "Coconuts"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+.entry-mode-tabs { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin:14px 0 4px; padding:4px; background:rgba(112,67,42,.08); border:1px solid rgba(112,67,42,.12); border-radius:13px; }
+.entry-mode-tabs button { align-items:center; background:transparent; border:1px solid transparent; border-radius:9px; color:#79584a; display:flex; font-size:.76rem; font-weight:800; gap:6px; justify-content:center; min-height:34px; padding:7px; }
+.entry-mode-tabs button.active { background:#fffaf0; border-color:rgba(135,78,52,.16); box-shadow:0 3px 9px rgba(78,35,20,.09); color:#572f28; }
+.entry-card-professional h2 { margin-top:1.05rem; }
+.entry-host-note { align-items:flex-start; background:rgba(231,175,66,.13); border:1px solid rgba(196,132,35,.2); border-radius:12px; color:#72513b; display:flex; font-size:.74rem; gap:7px; line-height:1.4; margin:13px 0 0; padding:10px; }
+.entry-host-note svg { color:#b87e22; flex:none; margin-top:1px; }
+.recover-room-link { background:transparent; border:0; color:#92513d; display:block; font-size:.72rem; font-weight:800; margin:11px auto 0; padding:5px 7px; text-align:center; text-decoration:underline; text-decoration-color:rgba(146,81,61,.35); text-underline-offset:3px; }
+.recover-room-link:hover,.recover-room-link:focus-visible { color:#b14636; outline:none; text-decoration-color:currentColor; }
+.mode-switch-button { background:rgba(231,175,66,.17); border:1px solid rgba(231,175,66,.4); border-radius:9px; color:#ffdd92; font-size:.69rem; font-weight:900; letter-spacing:.02em; min-height:33px; padding:0 9px; }
+.mode-switch-button:hover,.mode-switch-button:focus-visible { background:rgba(231,175,66,.3); outline:none; }
+@media (max-width:680px) { .mode-switch-button { font-size:.64rem; padding:0 7px; } .entry-mode-tabs { margin-top:12px; } }

@@ -1,0 +1,67 @@
+{
+  "packId": "warm-party-classic-fruits",
+  "name": "Fruits · Warm Party Classic",
+  "version": 5,
+  "entries": [
+    {
+      "id": 7,
+      "category": "Fruits",
+      "word": "Mango",
+      "impostorHint": "Tropical"
+    },
+    {
+      "id": 8,
+      "category": "Fruits",
+      "word": "Banana",
+      "impostorHint": "Peel"
+    },
+    {
+      "id": 9,
+      "category": "Fruits",
+      "word": "Apple",
+      "impostorHint": "Crisp"
+    },
+    {
+      "id": 10,
+      "category": "Fruits",
+      "word": "Watermelon",
+      "impostorHint": "Seeds"
+    },
+    {
+      "id": 11,
+      "category": "Fruits",
+      "word": "Grapes",
+      "impostorHint": "Bunch"
+    },
+    {
+      "id": 12,
+      "category": "Fruits",
+      "word": "Pineapple",
+      "impostorHint": "Crown"
+    },
+    {
+      "id": 41,
+      "category": "Fruits",
+      "word": "Orange",
+      "impostorHint": "Citrus"
+    },
+    {
+      "id": 42,
+      "category": "Fruits",
+      "word": "Strawberry",
+      "impostorHint": "Berry"
+    },
+    {
+      "id": 43,
+      "category": "Fruits",
+      "word": "Papaya",
+      "impostorHint": "Orange"
+    },
+    {
+      "id": 44,
+      "category": "Fruits",
+      "word": "Guava",
+      "impostorHint": "Fragrant"
+    }
+  ]
+}

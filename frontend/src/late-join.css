@@ -1,0 +1,14 @@
+.late-join-note {
+  align-items: flex-start;
+  background: rgba(216, 107, 76, .10);
+  border-left: 3px solid var(--coral);
+  color: #765041;
+  display: flex;
+  font-size: .73rem;
+  gap: 7px;
+  line-height: 1.42;
+  margin: 0 0 12px;
+  padding: 9px 10px;
+}
+
+.late-join-note svg { color: #b95038; flex: 0 0 auto; margin-top: 1px; }

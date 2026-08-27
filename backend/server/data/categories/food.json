@@ -1,0 +1,67 @@
+{
+  "packId": "warm-party-classic-food",
+  "name": "Food · Warm Party Classic",
+  "version": 5,
+  "entries": [
+    {
+      "id": 13,
+      "category": "Food",
+      "word": "Pizza",
+      "impostorHint": "Shareable"
+    },
+    {
+      "id": 14,
+      "category": "Food",
+      "word": "Sushi",
+      "impostorHint": "Delicate"
+    },
+    {
+      "id": 15,
+      "category": "Food",
+      "word": "Pancakes",
+      "impostorHint": "Breakfast"
+    },
+    {
+      "id": 16,
+      "category": "Food",
+      "word": "Biryani",
+      "impostorHint": "Aromatic"
+    },
+    {
+      "id": 17,
+      "category": "Food",
+      "word": "Dosa",
+      "impostorHint": "Crispy"
+    },
+    {
+      "id": 18,
+      "category": "Food",
+      "word": "Idli",
+      "impostorHint": "Steamed"
+    },
+    {
+      "id": 45,
+      "category": "Food",
+      "word": "Burger",
+      "impostorHint": "Bun"
+    },
+    {
+      "id": 46,
+      "category": "Food",
+      "word": "Samosa",
+      "impostorHint": "Triangle"
+    },
+    {
+      "id": 47,
+      "category": "Food",
+      "word": "Pasta",
+      "impostorHint": "Noodles"
+    },
+    {
+      "id": 48,
+      "category": "Food",
+      "word": "Vada",
+      "impostorHint": "Fried"
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+.role-vault {
+  background: transparent;
+  border: 0;
+  display: block;
+  min-height: 258px;
+  padding: 0;
+  perspective: 1000px;
+  text-align: center;
+  width: 100%;
+}
+
+.role-vault:focus-visible {
+  border-radius: 23px;
+  outline: 3px solid var(--gold);
+  outline-offset: 4px;
+}
+
+.role-vault-surface {
+  background: linear-gradient(145deg, #6d2630, #3b121a 68%, #2b0e14);
+  border: 1px solid rgba(255, 248, 233, .28);
+  border-radius: 23px;
+  box-shadow: 0 20px 46px rgba(24, 5, 8, .34), inset 0 1px 0 rgba(255, 255, 255, .18);
+  display: block;
+  min-height: 236px;
+  overflow: hidden;
+  position: relative;
+  transition: background .22s var(--ease), border-color .22s var(--ease), box-shadow .22s var(--ease);
+}
+
+.role-vault.open .role-vault-surface {
+  background: linear-gradient(145deg, #fff9ea, #eedbbc);
+  border-color: rgba(255, 255, 255, .68);
+  box-shadow: var(--shadow);
+}
+
+.role-vault-pattern {
+  background:
+    linear-gradient(135deg, transparent 46%, rgba(255, 236, 196, .11) 47%, rgba(255, 236, 196, .11) 53%, transparent 54%) 0 0 / 44px 44px,
+    linear-gradient(45deg, transparent 46%, rgba(255, 236, 196, .08) 47%, rgba(255, 236, 196, .08) 53%, transparent 54%) 0 0 / 44px 44px;
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.role-vault-status {
+  align-items: center;
+  background: rgba(255, 248, 233, .14);
+  border: 1px solid rgba(255, 248, 233, .19);
+  border-radius: 999px;
+  color: var(--cream);
+  display: inline-flex;
+  font-size: .67rem;
+  font-weight: 700;
+  gap: 6px;
+  left: 50%;
+  letter-spacing: .1em;
+  padding: 8px 11px;
+  pointer-events: none;
+  position: absolute;
+  text-transform: uppercase;
+  top: 17px;
+  transform: translateX(-50%);
+  z-index: 4;
+}
+
+.role-vault.open .role-vault-status {
+  background: rgba(91, 32, 40, .08);
+  border-color: rgba(91, 32, 40, .14);
+  color: #754131;
+}
+
+.role-vault-cover,
+.role-vault-secret {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  inset: 0;
+  justify-content: center;
+  padding: 52px 28px 25px;
+  position: absolute;
+  z-index: 2;
+}
+
+.role-vault-cover {
+  background: linear-gradient(145deg, rgba(98, 31, 40, .99), rgba(51, 14, 20, .99));
+  color: var(--cream);
+}
+
+.role-vault-cover small,
+.role-vault-secret small {
+  font-size: .69rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.role-vault-cover small { color: rgba(255, 243, 221, .68); }
+
+.role-vault-cover strong,
+.role-vault-secret strong {
+  font-family: Fraunces, serif;
+  letter-spacing: -.055em;
+  line-height: .96;
+  margin: .55rem 0 .45rem;
+}
+
+.role-vault-cover strong { font-size: clamp(2rem, 9vw, 3rem); }
+
+.role-vault-cover span {
+  color: rgba(255, 246, 228, .77);
+  font-size: .82rem;
+  line-height: 1.45;
+  max-width: 248px;
+}
+
+.role-vault-cover em,
+.role-vault-secret em {
+  align-items: center;
+  bottom: 18px;
+  display: inline-flex;
+  font-size: .7rem;
+  font-style: normal;
+  font-weight: 700;
+  gap: 6px;
+  position: absolute;
+}
+
+.role-vault-cover em { color: #f4c46c; }
+
+.role-vault-secret { color: var(--ink); }
+.role-vault-secret small { color: #9a6b47; }
+.role-vault-secret strong { font-size: clamp(2rem, 9vw, 3.4rem); }
+.role-vault.imposter .role-vault-secret strong { color: #b84545; }
+
+.role-vault-detail {
+  background: rgba(91, 32, 40, .08);
+  border-radius: 8px;
+  color: #724a3c;
+  font-size: .76rem;
+  font-weight: 700;
+  margin-top: .15rem;
+  max-width: 270px;
+  padding: 6px 10px;
+}
+
+.role-vault-secret em { color: #8a7062; }
+
+@media (prefers-reduced-motion: reduce) {
+  .role-vault-surface { transition: none; }
+}

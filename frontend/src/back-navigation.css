@@ -1,0 +1,19 @@
+.back-button {
+  align-self: flex-start;
+  font-size: 0.78rem;
+  min-height: 36px;
+  margin: 12px 0 2px;
+  padding: 7px 10px;
+}
+
+.join-fields .back-button,
+.create-room-card .back-button {
+  width: auto;
+}
+
+@media (max-width: 560px) {
+  .back-button {
+    min-height: 40px;
+    margin-top: 10px;
+  }
+}

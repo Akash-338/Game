@@ -1,0 +1,27 @@
+:focus-visible {
+  outline: 3px solid #f9cf75;
+  outline-offset: 3px;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  box-shadow: 0 0 0 4px rgba(249, 207, 117, 0.34);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 3px solid CanvasText;
+  }
+}

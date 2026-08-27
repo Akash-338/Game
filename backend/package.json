@@ -1,0 +1,9 @@
+{
+  "name": "word-impostor-realtime-backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/start-development.mjs",
+    "start": "node server/index.js"
+  }
+}

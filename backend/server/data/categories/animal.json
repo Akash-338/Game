@@ -1,0 +1,67 @@
+{
+  "packId": "warm-party-classic-animal",
+  "name": "Animal · Warm Party Classic",
+  "version": 5,
+  "entries": [
+    {
+      "id": 1,
+      "category": "Animal",
+      "word": "Penguin",
+      "impostorHint": "Waddle"
+    },
+    {
+      "id": 2,
+      "category": "Animal",
+      "word": "Elephant",
+      "impostorHint": "Tusks"
+    },
+    {
+      "id": 3,
+      "category": "Animal",
+      "word": "Dolphin",
+      "impostorHint": "Sonar"
+    },
+    {
+      "id": 4,
+      "category": "Animal",
+      "word": "Chameleon",
+      "impostorHint": "Camouflage"
+    },
+    {
+      "id": 5,
+      "category": "Animal",
+      "word": "Tiger",
+      "impostorHint": "Stripes"
+    },
+    {
+      "id": 6,
+      "category": "Animal",
+      "word": "Rabbit",
+      "impostorHint": "Hop"
+    },
+    {
+      "id": 37,
+      "category": "Animal",
+      "word": "Lion",
+      "impostorHint": "Mane"
+    },
+    {
+      "id": 38,
+      "category": "Animal",
+      "word": "Giraffe",
+      "impostorHint": "Neck"
+    },
+    {
+      "id": 39,
+      "category": "Animal",
+      "word": "Peacock",
+      "impostorHint": "Feathers"
+    },
+    {
+      "id": 40,
+      "category": "Animal",
+      "word": "Dog",
+      "impostorHint": "Bark"
+    }
+  ]
+}

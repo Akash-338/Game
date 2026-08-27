@@ -1,0 +1,67 @@
+{
+  "packId": "warm-party-classic-object",
+  "name": "Object · Warm Party Classic",
+  "version": 5,
+  "entries": [
+    {
+      "id": 19,
+      "category": "Object",
+      "word": "Camera",
+      "impostorHint": "Memories"
+    },
+    {
+      "id": 20,
+      "category": "Object",
+      "word": "Umbrella",
+      "impostorHint": "Shelter"
+    },
+    {
+      "id": 21,
+      "category": "Object",
+      "word": "Headphones",
+      "impostorHint": "Audio"
+    },
+    {
+      "id": 22,
+      "category": "Object",
+      "word": "Keyboard",
+      "impostorHint": "Typing"
+    },
+    {
+      "id": 23,
+      "category": "Object",
+      "word": "Wallet",
+      "impostorHint": "Cards"
+    },
+    {
+      "id": 24,
+      "category": "Object",
+      "word": "Telescope",
+      "impostorHint": "Starlight"
+    },
+    {
+      "id": 49,
+      "category": "Object",
+      "word": "Bicycle",
+      "impostorHint": "Pedals"
+    },
+    {
+      "id": 50,
+      "category": "Object",
+      "word": "Lantern",
+      "impostorHint": "Glow"
+    },
+    {
+      "id": 51,
+      "category": "Object",
+      "word": "Backpack",
+      "impostorHint": "Travel"
+    },
+    {
+      "id": 52,
+      "category": "Object",
+      "word": "Watch",
+      "impostorHint": "Time"
+    }
+  ]
+}

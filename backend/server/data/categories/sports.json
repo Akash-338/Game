@@ -1,0 +1,67 @@
+{
+  "packId": "warm-party-classic-sports",
+  "name": "Sports · Warm Party Classic",
+  "version": 5,
+  "entries": [
+    {
+      "id": 31,
+      "category": "Sports",
+      "word": "Chess",
+      "impostorHint": "Checkmate"
+    },
+    {
+      "id": 32,
+      "category": "Sports",
+      "word": "Badminton",
+      "impostorHint": "Shuttlecock"
+    },
+    {
+      "id": 33,
+      "category": "Sports",
+      "word": "Cricket",
+      "impostorHint": "Wicket"
+    },
+    {
+      "id": 34,
+      "category": "Sports",
+      "word": "Football",
+      "impostorHint": "Goal"
+    },
+    {
+      "id": 35,
+      "category": "Sports",
+      "word": "Kabaddi",
+      "impostorHint": "Raid"
+    },
+    {
+      "id": 36,
+      "category": "Sports",
+      "word": "Bowling",
+      "impostorHint": "Strikes"
+    },
+    {
+      "id": 57,
+      "category": "Sports",
+      "word": "Volleyball",
+      "impostorHint": "Net"
+    },
+    {
+      "id": 58,
+      "category": "Sports",
+      "word": "Tennis",
+      "impostorHint": "Racket"
+    },
+    {
+      "id": 59,
+      "category": "Sports",
+      "word": "Hockey",
+      "impostorHint": "Stick"
+    },
+    {
+      "id": 60,
+      "category": "Sports",
+      "word": "Swimming",
+      "impostorHint": "Pool"
+    }
+  ]
+}

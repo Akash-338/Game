@@ -1,0 +1,58 @@
+flowchart TB
+  subgraph Entry[Entry decision]
+    U[Enter User ID]
+    H{User ID is Host1234?}
+    J[Ask Room ID and Password]
+    G[Optional Join as Ghost]
+    U --> H
+    H -->|Yes| HD[Host Command Center]
+    H -->|No| J
+    J --> G
+    J --> PL[Player Lobby]
+    G --> GV[Ghost View]
+  end
+
+  subgraph Laptop[Host laptop]
+    HD --> CR[Create room and set rules]
+    CR --> WR[Word pack JSON and category filters]
+    WR --> RD[Ready check]
+    RD --> SR[Start: assign impostors randomly]
+    SR --> TG[Drag order and Next Turn]
+    TG --> RV[Host Reveal]
+    RV --> NX{Continue or Restart}
+    NX -->|Continue| WR
+    NX -->|Restart| CR
+  end
+
+  subgraph Phones[Player and Ghost phones]
+    PL --> RY[Tap Ready]
+    RY --> EV[Tap envelope to reveal or close role]
+    EV --> HI[Submit one locked hint]
+    HI --> HB[See live hint board and active turn]
+    GV --> HB
+    HB --> RS[See reveal results]
+  end
+
+  subgraph Server[Local game server on host laptop]
+    EX[Express JavaScript server]
+    SO[Socket.IO room channels]
+    ST[In-memory live room state]
+    DB[(SQLite: rooms, players, rounds, hints, used words)]
+    JS[(Local JSON: default and custom word packs)]
+    EX <--> SO
+    SO <--> ST
+    ST <--> DB
+    EX <--> JS
+  end
+
+  HD <-->|Host events and snapshots| SO
+  PL <-->|Player events and private role updates| SO
+  GV <-->|Ghost events and spectator updates| SO
+
+  classDef warm fill:#F9F0DF,stroke:#8B3C35,color:#2D1C1A,stroke-width:2px
+  classDef accent fill:#D96C4A,stroke:#5D2924,color:#FFF9F0,stroke-width:2px
+  classDef data fill:#E5C46A,stroke:#775C1C,color:#2D1C1A,stroke-width:2px
+  class U,H,J,G,PL,GV,HD,CR,WR,RD,SR,TG,RV,NX,RY,EV,HI,HB,RS warm
+  class EX,SO,ST accent
+  class DB,JS data
+

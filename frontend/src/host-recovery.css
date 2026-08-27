@@ -1,0 +1,33 @@
+.host-access-tabs {
+  background: rgba(111, 65, 49, .08);
+  border-radius: 10px;
+  display: grid;
+  gap: 4px;
+  grid-template-columns: 1fr 1fr;
+  margin: 12px 0 16px;
+  padding: 4px;
+}
+
+.host-access-tabs button {
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  color: #7a594b;
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 8px 7px;
+  transition: background .18s var(--ease), color .18s var(--ease);
+}
+
+.host-access-tabs button.active {
+  background: #fffaf0;
+  box-shadow: 0 2px 7px rgba(91, 50, 34, .11);
+  color: #713a30;
+}
+
+.host-access-copy {
+  color: #806452;
+  font-size: .78rem;
+  line-height: 1.45;
+  margin: -7px 0 13px;
+}

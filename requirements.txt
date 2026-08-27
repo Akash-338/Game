@@ -1,0 +1,223 @@
+# The Word Impostor — Current Product, Technical, and Operating Requirements
+
+**Document status:** Implemented and maintained specification. This document describes the current working application, its required behaviours, and its local operating rules. It replaces the original planning-only document.
+
+## 1. Product Purpose
+
+The Word Impostor is a real-time, in-person social-deduction party game. One laptop runs the host control center while friends join the same room from phone browsers through a forwarded tunnel link. The server is authoritative: it validates every game action, persists session data locally, and synchronizes approved state to every connected device without a page refresh.
+
+> **Core game rule:** Every active player receives the same secret word except the configured impostor or impostors. Players give clues, discuss suspicion, and vote to identify impostors before impostors achieve parity with civilians.
+
+## 2. Fixed Technical Constraints
+
+| Area | Required implementation |
+|---|---|
+| Language | **JavaScript and JSX only** for all game features. Do not introduce TypeScript game code. |
+| Client | React 19, JSX, CSS, Framer Motion, Lucide React, and `@dnd-kit` for drag-and-drop turn ordering. |
+| Server | Node.js, Express 4, and Socket.IO 4. |
+| Real-time transport | Socket.IO uses **WebSocket-only** transport so phone connections work reliably through the development tunnel. |
+| Data store | Node built-in SQLite, stored locally on the host laptop. |
+| Word content | Local JSON category files plus host-uploaded custom JSON packs. |
+| Local port | **4300**. Do not change it to 3000, 3306, 5000, 5173, or 5174. |
+| Windows workflow | Use `npm`; the local project is `C:\Users\aksh0\Desktop\Word_hunt\Word_Imposter`. |
+| Responsive design | Mobile-first player screens; the host experience is optimized for laptop but remains responsive. |
+
+## 3. Start and Tunnel Requirements
+
+Run the game from the Windows project folder:
+
+```powershell
+npm install
+npm run dev
+```
+
+The laptop opens `http://localhost:4300`. Forward port **4300** in VS Code and share that generated tunnel URL with phone players. The server must bind in a way that accepts tunnel traffic, and Socket.IO must remain WebSocket-only.
+
+| Command | Required use |
+|---|---|
+| `npm run dev` | Starts the local development game server on port 4300. |
+| `npm start` | Starts the local production-mode game server. |
+| `npm test` | Runs the regression suite. |
+| `npm run build` | Builds the client and generates the production server entry. |
+| `npm run audit:ui` | Checks active client views and responsive layout invariants. |
+
+## 4. Entry, Identity, and Room Access
+
+| Situation | Required behaviour |
+|---|---|
+| Host identity | Entering `Host1234` routes directly to the host dashboard. The host creates or recovers a room there. |
+| Player identity | Any other User ID opens the Room ID and Room Password form. The supplied User ID is shown during play. |
+| Join validation | A player must provide the correct room code and password. Duplicate active identities are rejected safely. |
+| Reconnection | A temporarily disconnected player can rejoin with the same User ID, room code, and password without losing the active slot. |
+| Kicked-player return | A kicked player may rejoin the room using the normal credentials flow. |
+| Explicit departure | Selecting **Leave Room** is intentional and immediate: the player disappears from all rosters and no longer holds an active slot. This is distinct from a network disconnect. |
+| Navigation | Back controls exist only on safe pre-game entry and join screens; gameplay navigation cannot accidentally abandon an active round. |
+
+## 5. Host Dashboard Requirements
+
+The laptop host dashboard is the game command center. It must present the room state without exposing confidential role information to people viewing the host screen from nearby.
+
+| Area | Required host controls and behaviour |
+|---|---|
+| Room lifecycle | Create room, recover a room after a short accidental disconnection, explicitly end/terminate room, and start the next game. |
+| Roster | Show player User IDs, two-letter initials avatars, online/offline state, ready state, Ghost state, turn position, and kick action. |
+| Turn order | Drag active players to order turns. The selected turn is highlighted on every device. |
+| Ready gate | Start is enabled only when the required active connected players are ready and the roster supports the selected impostor count. |
+| Role controls | Select impostor count; configure whether impostors see category and/or the single-word hint; use a hidden host-only peeking control. |
+| Word controls | Select categories, use Select All, choose an eligible word, randomize an eligible word, and manage uploaded custom packs. |
+| Play controls | Start round, advance turn, nudge an individual player, issue an alert, lock discussion, control clue-cycle settings, and reveal/end results. |
+| Privacy | The secret word and peeking data remain host-only until the permitted reveal stage. |
+
+## 6. Player and Ghost Experience
+
+### 6.1 Player Lobby
+
+Each player sees a two-letter initials avatar based on the first two uppercase characters of the User ID, an online/offline indicator, room status, the active roster, and a large Ready control. A player cannot begin a round; only the host starts after readiness requirements are met.
+
+### 6.2 Private Role Vault
+
+Role information is delivered only to the eligible player. It is hidden behind a fully opaque privacy vault/envelope that opens on tap and closes on tap. Civilian players see the actual word and category. Impostors receive only the configured category and/or one-word hint. No sealed state may leak role data through the client snapshot.
+
+### 6.3 Hint Board and Turn Flow
+
+The current turn is visible to every participant. A player submits a clue through the phone composer; it persists immediately, becomes visible to everyone, and advances the authoritative turn. Hints are grouped in separate player cards with the player name, connection dot, and numbered clue rows.
+
+| Hint rule | Required behaviour |
+|---|---|
+| Player editing | Players cannot edit a saved clue. The host may make a controlled correction. |
+| Duplicate prevention | The same normalized clue cannot be submitted twice anywhere in the room. Case and spacing do not bypass this rule. |
+| Multiple cycles | Clues are retained per player across multiple cycles and rounds. |
+| Presence | A temporary disconnect blurs/offlines the relevant player card; a rejoin restores it and broadcasts a return notice. |
+| Feedback | Supported devices use haptic feedback for personal turns, role delivery, nudges, and important round events. The game works when vibration is unavailable. |
+
+### 6.4 Ghost Mode
+
+Late joiners may enter as Ghosts, and eliminated players transition to Ghost status. Ghosts can follow the permitted live game activity but are excluded from readiness, turn order, clue submission, role selection, and voting. When the host chooses Continue with the same players, every non-kicked Ghost is restored to the active lobby and must ready again.
+
+## 7. Discussion, Activity, and Scoring
+
+The compact Room Activity control sits in the top bar beside the player avatar. It provides Discussion, Scores, Game log, and Pack information in one bounded panel. The panel opens only by user action and closes for outside interaction, page scrolling, focus loss, or Escape; scrolling inside the panel must not close it.
+
+| Feature | Required behaviour |
+|---|---|
+| Public discussion | Available during clue play and voting. Every message displays the sender and content. |
+| Discussion cooldown | Each player has a 15-second send cooldown. The host can lock discussion. |
+| Game log | Records meaningful room events such as joins, returns, leaves, starts, vote outcomes, and round outcomes. |
+| Score ledger | Shows each player’s score changes with explicit explanation text, for example why a civilian or impostor received points. |
+| Alerts | Host alerts and nudges are delivered in real time without exposing private role data. |
+
+## 8. Voting, Elimination, and Win Rules
+
+Voting is authoritative and automatic after the required clue cycle completes. Each participant uses an individual voting interface, while the room sees the live public feed, such as “Akash voted for Maya.” A player cannot vote for themselves.
+
+| Rule | Required behaviour |
+|---|---|
+| Opening cadence | The first ballot opens only after **two complete clue cycles**. |
+| Later cadence | Each later ballot opens after **one complete clue cycle**. |
+| Ballot completion | The ballot resolves when all eligible active players vote or eligible participants abstain because they are offline. |
+| Public result | Every completed ballot displays a persistent result card showing eliminated player names and whether each was an impostor or civilian. |
+| Elimination cap | A ballot result can eliminate at most two players. Eliminated players become Ghosts. |
+| Two-way top tie | Both tied players are eliminated, subject to the two-player cap. |
+| Three-or-more tie | Start a targeted re-vote among the tied leaders. If unresolved, finish as a stalemate rather than eliminating too many players. |
+| Parity win | If active impostors are greater than or equal to active civilians, impostors win. |
+| Civilian win | Civilians win when all active impostors have been eliminated. |
+| Final results | Every player result view lists the impostor names, actual word, category, clues, score ledger, and vote outcomes permitted by the finished round. |
+| Assignment fairness | New rounds avoid immediately repeating the same impostor when another eligible active player is available. |
+
+## 9. Word Packs and Category Data
+
+The built-in words are stored only in six individual category files. The system must not reintroduce a combined default JSON pack or a combined default database row.
+
+| Built-in file | Database pack name | Category |
+|---|---|---|
+| `animal.json` | Animal | Animal |
+| `fruits.json` | Fruits | Fruits |
+| `food.json` | Food | Food |
+| `object.json` | Object | Object |
+| `karnataka-big-cities.json` | Karnataka Big Cities | Karnataka Big Cities |
+| `sports.json` | Sports | Sports |
+
+Each built-in file has stable numeric entry IDs, a category, actual word, and **single-word** impostor hint. The `word_packs` database records must expose the six individual built-in pack names. Custom packs retain a pack ID, name, version, entries, and local file path. The host can preview, enable/disable, and delete custom packs. No word may repeat within the same room session; used-word tracking remains scoped to the actual category pack and entry ID.
+
+## 10. Session Reliability and Cleanup
+
+| Event | Required behaviour |
+|---|---|
+| Normal host exit or disconnect | Start a 20-second host recovery period. Players see **Waiting for the Host to Join**. If the host returns with valid room credentials, the game continues. |
+| Host fails to return | After the 20-second grace period, terminate the room and purge session data. |
+| Intentional host termination | End the room immediately and purge room credentials, players, rounds, hints, votes, scores, events, and used-word history. The room code is reusable. |
+| Server restart or stale session | Stale disconnected rooms are cleaned during startup; no stale room should block reuse indefinitely. |
+| Host recovery safety | Clue submission pauses while host recovery is active. |
+| Player departure | Intentional Leave Room removes the player immediately. A passive connection drop preserves the slot for reconnection. |
+
+## 11. Local SQLite Data Model
+
+SQLite is the durable source for game sessions. The server reads and writes the authoritative records; clients receive sanitized snapshots only.
+
+| Record group | Required information |
+|---|---|
+| Rooms | Room code, password hash, host session, game status, selected categories/word, configuration, timestamps, and recovery state. |
+| Players | User ID, role state, initials avatar data, Ghost/kicked/ready/connected status, turn order, and join/leave metadata. |
+| Rounds and hints | Selected category pack and entry, secret word, configured role visibility, clue cycles, persisted clues, and controlled host edits. |
+| Packs and no-repeat history | Six individual built-in pack records, uploaded-pack metadata, room pack enablement, and used category-pack entry keys. |
+| Voting and results | Ballots, re-votes, eliminations, outcome cards, final roles, scores, and explanatory score events. |
+| Discussion and audit trail | Discussion messages, host alerts, player join/leave events, reconnect notices, and game events. |
+
+## 12. Architecture and Security Boundaries
+
+| Layer | Responsibility |
+|---|---|
+| React client | Renders entry, lobby, player, Ghost, host, voting, discussion, activity, and results views. It stores only short-lived interface state locally. |
+| Express and game service | Validates credentials, room membership, game rules, custom pack input, and all host/player commands. |
+| Socket.IO | Manages WebSocket presence, room channels, reconnection, targeted private role delivery, and broadcast snapshots. |
+| SQLite and JSON files | Preserve local session state, game history, individual category packs, custom packs, and no-repeat records. |
+
+Security and privacy rules are mandatory: role payloads are audience-specific; a player never receives another player’s private role; host peeking is not broadcast; secrets do not appear on player-visible host-screen data; passwords are stored as hashes; and all host/player requests are validated server-side.
+
+## 13. Visual and Accessibility Direction
+
+The design language is **Warm Party Table**: deep burgundy/merlot background, cream card surfaces, amber/terracotta action accents, forest-green success states, and dark readable type. Use the display serif only for expressive titles and a legible sans-serif for controls and live game data.
+
+Motion uses short transform/opacity transitions, supports reduced motion, and never blocks gameplay. Buttons give press feedback, the role vault visibly opens and closes, active turns are clear, and mobile controls remain reachable above the browser safe area. All important status must be understandable without color alone.
+
+## 14. Source Layout and Quality Requirements
+
+The client must remain modular. `App.jsx` acts as a controller/router; reusable controls, shell elements, game views, activity panel, and host dashboard remain in focused modules. Keep JavaScript/JSX-only files for game features and preserve the established regression models for role privacy, activity dismissal, avatar initials, voting results, clue boards, navigation, and connection state.
+
+Minimum validation before a feature is accepted:
+
+```powershell
+npm test
+npm run test:game-flow
+node backend/server/game/voting-flow-check.mjs
+npm run test:host-reconnect
+npm run audit:ui
+npm run build
+```
+
+## 15. Public Repository Boundaries
+
+The public repository includes the standalone application source, six built-in category JSON files, documentation, tests, and npm package manifest. It must not include personal session data, secrets, logs, generated output, editor settings, caches, local custom pack uploads, or platform workspace artifacts.
+
+The `.gitignore` must keep the following classes outside public commits:
+
+| Excluded class | Examples |
+|---|---|
+| Local game data | `backend/data/*.sqlite`, `backend/data/word-packs/` |
+| Credentials and machine overrides | `.env*`, PID files, logs |
+| Generated output | `backend/dist/`, `frontend/dist/`, coverage, test results, caches |
+| Editor/OS files | `.vscode/`, `.idea/`, swap files, `.DS_Store`, `Thumbs.db` |
+| Workspace/debug artifacts | hidden workspace folders and debug collector files |
+| Unneeded project-template files | `components.json`, `template.json`, package-manager cache/lock artifacts not used by the Windows npm workflow |
+
+## 16. Maintained Documentation
+
+| File | Required role |
+|---|---|
+| `README.md` | Fast local setup and tunnel instructions. |
+| `requirements.txt` | This complete current specification. |
+| `docs/word-impostor-architecture.excalidraw` | Editable compact parent-to-child feature architecture map. |
+| `word-impostor-architecture.excalidraw` | Matching editable copy at the project root for convenient local access. |
+| `todo.md` | Historical implementation checklist. Completed work remains marked `[x]`; new work is added as `[ ]` before implementation. |
+
+Any future feature must preserve the rules above, update this document when the public product behaviour changes, include regression coverage, and synchronize the validated source to the Windows project copy.

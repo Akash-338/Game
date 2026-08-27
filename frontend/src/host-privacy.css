@@ -1,0 +1,30 @@
+.host-privacy-reminder {
+  align-items: center;
+  background: linear-gradient(135deg, rgba(97, 35, 45, .92), rgba(64, 20, 27, .96));
+  border: 1px solid rgba(245, 201, 111, .34);
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(41, 7, 13, .22);
+  color: var(--cream);
+  display: flex;
+  gap: 13px;
+  margin-bottom: 14px;
+  padding: 16px 18px;
+}
+
+.host-privacy-reminder svg { color: #f1bf5d; flex: 0 0 auto; }
+.host-privacy-reminder small { color: #edbd70; display: block; font-size: .65rem; font-weight: 800; letter-spacing: .12em; margin-bottom: 3px; }
+.host-privacy-reminder strong { display: block; font-family: Fraunces, serif; font-size: clamp(1rem, 2.2vw, 1.28rem); line-height: 1.1; }
+
+@media (max-width: 720px) { .host-privacy-reminder { margin: 0 0 12px; padding: 14px; } }
+
+/* Never let a nearby player read the live secret from the host display. */
+.live-word { display: none !important; }
+.host-stage .host-turn-card::before {
+  color: #987365;
+  content: "TABLE PRIVACY ACTIVE — THE SECRET WORD IS HIDDEN";
+  display: block;
+  font-size: .64rem;
+  font-weight: 800;
+  letter-spacing: .11em;
+  margin-bottom: 10px;
+}

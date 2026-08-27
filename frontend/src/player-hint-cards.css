@@ -1,0 +1,158 @@
+.hint-board.player-hint-board {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  display: grid;
+  gap: 13px;
+  grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+  max-height: none;
+  overflow: visible;
+}
+
+.player-hint-card {
+  background: rgba(255, 249, 235, .97);
+  border: 1px solid rgba(255, 255, 255, .56);
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(37, 6, 11, .14);
+  min-width: 0;
+  overflow: hidden;
+  transition: opacity .2s var(--ease), transform .2s var(--ease);
+}
+
+.player-hint-card-header {
+  align-items: center;
+  background: linear-gradient(105deg, rgba(217, 100, 73, .12), rgba(232, 174, 65, .13));
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 10px;
+  min-height: 58px;
+  padding: 10px 12px;
+}
+
+.player-hint-card-name {
+  min-width: 0;
+}
+
+.player-hint-card-name strong {
+  display: block;
+  font-family: Fraunces, serif;
+  font-size: 1.05rem;
+  letter-spacing: -.03em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-hint-status {
+  align-items: center;
+  color: #4f9670;
+  display: inline-flex;
+  font-size: .64rem;
+  font-weight: 800;
+  gap: 5px;
+  letter-spacing: .07em;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+.player-hint-card.is-offline .player-hint-status {
+  color: #b84545;
+}
+
+.player-hint-card-content {
+  transition: filter .2s var(--ease), opacity .2s var(--ease);
+}
+
+.player-hint-card.is-offline .player-hint-card-content {
+  filter: grayscale(.92) blur(1px);
+  opacity: .58;
+}
+
+.player-hint-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.player-hint-table th {
+  background: rgba(101, 57, 43, .055);
+  color: #977364;
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  padding: 8px 7px;
+  text-align: left;
+}
+
+.player-hint-table th:first-child,
+.player-hint-table td:first-child {
+  padding-left: 13px;
+  width: 38px;
+}
+
+.player-hint-table th:nth-child(2),
+.player-hint-table td:nth-child(2) {
+  width: 58px;
+}
+
+.player-hint-table td {
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+  font-size: .76rem;
+  padding: 10px 7px;
+  vertical-align: middle;
+}
+
+.player-hint-sequence {
+  color: var(--terracotta);
+  font-family: Fraunces, serif;
+  font-size: 1.03rem !important;
+  font-weight: 700;
+}
+
+.player-hint-round {
+  color: #79564a !important;
+  font-family: Fraunces, serif;
+  font-size: 1rem !important;
+  font-weight: 700;
+}
+
+.player-hint-content {
+  font-family: Fraunces, serif;
+  font-size: 1rem !important;
+  letter-spacing: -.015em;
+  overflow-wrap: anywhere;
+}
+
+.player-hint-content small,
+.player-hint-content .hint-edit {
+  display: block;
+  margin-top: 5px;
+}
+
+.player-hint-empty {
+  align-items: center;
+  color: #927468;
+  display: flex;
+  font-size: .78rem;
+  min-height: 78px;
+  padding: 14px;
+}
+
+@media (max-width: 520px) {
+  .hint-board.player-hint-board {
+    grid-template-columns: 1fr;
+  }
+
+  .player-hint-card {
+    border-radius: 16px;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .player-hint-card,
+  .player-hint-card-content {
+    transition: none;
+  }
+}
