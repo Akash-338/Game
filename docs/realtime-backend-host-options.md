@@ -1,5 +1,11 @@
 # Realtime Backend Host Options
 
+## Active Staging Backend
+
+The user-approved Render Free service **`word-impostor-realtime-staging`** is deployed in Singapore from `Akash-338/Game-` on the `main` branch. Its public HTTPS/WSS origin is `https://word-impostor-realtime-staging.onrender.com`. It runs the root Node.js workspace with `npm ci` and `node backend/server/index.js`. The provider secret manager contains only the existing Supabase Data API URL/server key, Upstash Redis TLS URL, and the two explicit cloud flags; no browser-facing `VITE_*` credential has been configured.
+
+The redacted public lifecycle check connects to this origin and validates cloud mode plus its Redis Socket.IO adapter before exercising room creation, presence, role-safe snapshots, direct-message privacy, alerts, moderation, hints, voting, tallying, continuation, rejoin, voluntary leave, host recovery, and full room cleanup. The backend has no reliance on its ephemeral local filesystem because authoritative cloud sessions use Supabase and cross-instance signaling uses Upstash Redis.
+
 ## Current Shortlist
 
 Render Free Web Services are a viable **no-cost staging option** for the separately hosted Node.js/Socket.IO backend because Render documents support for inbound public WebSocket connections. The Word Impostor client already has reconnection behavior and will use a single HTTPS/WSS origin through `VITE_REALTIME_URL` once a backend is available.[1][2]
@@ -18,7 +24,7 @@ The user requested **no paid subscription**. Therefore, Render Free may be used 
 
 ## Required Deployment Controls
 
-The backend must receive `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, `UPSTASH_REDIS_URL`, and `CORS_ORIGIN` only through the host’s secret manager. `WORD_IMPOSTOR_CLOUD_MODE=true` and `WORD_IMPOSTOR_REDIS_ADAPTER_ENABLED=true` remain prohibited until the service-level cloud parity suite passes. The Vercel frontend receives only `VITE_REALTIME_URL`; no database or Redis credential is browser-visible.
+The backend receives `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and `UPSTASH_REDIS_URL` only through the host’s secret manager. The staging service has `WORD_IMPOSTOR_CLOUD_MODE=true` and `WORD_IMPOSTOR_REDIS_ADAPTER_ENABLED=true`; its public lifecycle now verifies both flags through the redacted health response. `CORS_ORIGIN` remains optional: when unset, the server accepts any public origin, which is appropriate only for this temporary staging endpoint. Before a separate frontend production deployment, set it to the final frontend origin. The Vercel frontend will receive only `VITE_REALTIME_URL`; no database or Redis credential may be browser-visible.
 
 ## References
 

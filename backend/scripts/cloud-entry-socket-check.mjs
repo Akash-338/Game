@@ -45,7 +45,7 @@ async function waitFor(predicate, message) {
   throw new Error(message);
 }
 
-async function waitForHealth(baseUrl, server) {
+async function waitForHealth(baseUrl, server, { expectRedisAdapter = false } = {}) {
   let output = "";
   server.stdout?.on("data", (chunk) => { output += chunk.toString(); });
   server.stderr?.on("data", (chunk) => { output += chunk.toString(); });
@@ -55,6 +55,7 @@ async function waitForHealth(baseUrl, server) {
       if (response.ok) {
         const health = await response.json();
         assert.equal(health.runtime.cloudModeEnabled, true, "The isolated server must start in explicit cloud mode.");
+        if (expectRedisAdapter) assert.equal(health.runtime.redisAdapterEnabled, true, "The public staging server must attach its explicitly configured Redis Socket.IO adapter.");
         return;
       }
     } catch {}
@@ -76,11 +77,14 @@ async function stopServer(child) {
 
 const runtimeSecrets = getWordImpostorRuntimeSecrets();
 const repository = createSupabaseGameRepository({ url: runtimeSecrets.supabaseUrl, secretKey: runtimeSecrets.supabaseSecretKey });
+const deployedBaseUrl = typeof process.env.WORD_IMPOSTOR_TEST_BASE_URL === "string" && process.env.WORD_IMPOSTOR_TEST_BASE_URL.trim()
+  ? process.env.WORD_IMPOSTOR_TEST_BASE_URL.trim().replace(/\/$/, "")
+  : null;
 const port = 4700 + Math.floor(Math.random() * 200);
-const baseUrl = `http://127.0.0.1:${port}`;
+const baseUrl = deployedBaseUrl || `http://127.0.0.1:${port}`;
 const roomCode = `CE${Date.now().toString().slice(-8)}`;
 const password = "entry-check";
-const server = spawn(process.execPath, ["backend/server/index.js"], {
+const server = deployedBaseUrl ? null : spawn(process.execPath, ["backend/server/index.js"], {
   cwd: projectRoot,
   env: { ...process.env, NODE_ENV: "production", PORT: String(port), WORD_IMPOSTOR_CLOUD_MODE: "true", WORD_IMPOSTOR_REDIS_ADAPTER_ENABLED: "false" },
   stdio: ["ignore", "pipe", "pipe"]
@@ -93,7 +97,7 @@ function setStage(nextStage) { stage = nextStage; console.log(`CLOUD_ENTRY_SOCKE
 
 try {
   setStage("health");
-  await waitForHealth(baseUrl, server);
+  await waitForHealth(baseUrl, server || { stdout: null, stderr: null }, { expectRedisAdapter: Boolean(deployedBaseUrl) });
   setStage("room-create");
   const host = await connect(baseUrl); sockets.push(host);
   const created = await request(host, "createRoom", { roomCode, password, hostUserId: "Creator" });
@@ -215,7 +219,7 @@ try {
   console.error(`CLOUD_ENTRY_SOCKET_CHECK failed_stage=${stage} secrets=redacted`);
 } finally {
   sockets.forEach((socket) => socket.disconnect());
-  await stopServer(server);
+  if (server) await stopServer(server);
   if (roomId) {
     const cleaned = await Promise.race([
       repository.purgeRoomSession(roomId).then(() => true).catch(() => false),
