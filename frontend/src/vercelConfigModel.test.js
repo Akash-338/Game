@@ -16,6 +16,7 @@ describe("Vercel frontend boundary", () => {
       "socket.io-client": "^4.8.3"
     });
     expect(manifest.devDependencies.vite).toBe("^7.1.7");
+    expect(manifest.scripts.build).toBe("vite build --config vite.vercel.config.js");
     expect(manifest.scripts["build:vercel"]).toBe("vite build --config vite.vercel.config.js");
   });
 
