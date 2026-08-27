@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
+import path from "node:path";
 import { configureProductionStaticRouting } from "./productionStaticRouting.js";
 
 function appDouble() {
@@ -15,11 +16,12 @@ describe("configureProductionStaticRouting", () => {
       fileExists: vi.fn(() => true)
     });
 
-    expect(staticMiddleware).toHaveBeenCalledWith("/project/dist/public");
+    const publicDir = path.join("/project", "dist", "public");
+    expect(staticMiddleware).toHaveBeenCalledWith(publicDir);
     expect(app.use).toHaveBeenCalledWith("static-middleware");
     const sendFile = vi.fn();
     app.get.mock.calls[0][1]({}, { sendFile });
-    expect(sendFile).toHaveBeenCalledWith("/project/dist/public/index.html");
+    expect(sendFile).toHaveBeenCalledWith(path.join(publicDir, "index.html"));
   });
 
   it("returns an intentional backend-only response when no frontend bundle is deployed", () => {
