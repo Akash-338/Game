@@ -12,6 +12,7 @@ import { projectRoot, purgeUnfinishedRoomSessions } from "./game/db.js";
 import { restoreActiveParticipantSocketModes } from "./roomParticipantMode.js";
 import { getWordImpostorRuntimeConfig, getWordImpostorRuntimeSecrets } from "./runtimeConfig.js";
 import { attachRedisSocketAdapter } from "./realtime/redisSocketAdapter.js";
+import { configureProductionStaticRouting } from "./productionStaticRouting.js";
 import sqliteGameRepository from "./game/repositories/sqliteGameRepositoryRuntime.js";
 import { createGameRepository } from "./game/repositories/gameRepositoryFactory.js";
 import { createAsyncGameCommandDispatcher } from "./game/repositories/asyncGameCommandDispatcher.js";
@@ -188,9 +189,7 @@ if (process.env.NODE_ENV === "development") {
   const vite = await createViteServer({ server: { middlewareMode: true, hmr: false, ws: false }, appType: "spa" });
   app.use(vite.middlewares);
 } else {
-  const publicDir = path.join(projectRoot, "dist", "public");
-  app.use(express.static(publicDir));
-  app.get("*", (_req, res) => res.sendFile(path.join(publicDir, "index.html")));
+  configureProductionStaticRouting(app, { projectRoot, staticMiddleware: express.static });
 }
 
 const port = Number(process.env.PORT || 4300);
